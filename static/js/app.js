@@ -1,53 +1,48 @@
 // Get the data endpoint
 const bellybutton = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json";
 
+function init() {
 
-function init(){
-// Fetch the JSON data and console log it
-d3.json(bellybutton).then(data => {
+  let selector = d3.select("#selDataset");
 
- // set arrays equal to the data 
-  let  names = data.names;
-  let  metadata = data.metadata;
-  let  sampleData = data.samples;
-// log each array 
-  //console.log(names);
-  //console.log(metadata);
-  //console.log(sampleData)
-// grab first sample to start chart  
-  let firstSample = names[0];
-  console.log(firstSample)
+  d3.json(bellybutton).then(data => {
+    let sampleIDs = data.names;
 
-  function selectData(testSubject){
-   return testSubject.id === firstSample
+    for (let i = 0; i < sampleIDs.length; i++){
+      selector
+        .append("option")
+        .text(sampleIDs[i])
+        .property("value" , sampleIDs[i]);
+    }
+
+  let firstsample = sampleIDs[0];
+
+  function buildMetadata(sample){
+    let metadata = data.metadata;
+
+    let currentSample = metadata.filter((subject) => subject.id == sample)
+
+   let panel =  d3.select('#sample-metadata');
+
+      for (let i = 0; i < currentSample.length; i++){
+            panel
+            .append("p")
+            .text(currentSample[i])
+            .property(currentSample[i])
+          console.log(currentSample[i])
+      }
+
+      // figure out how to get through the object insde the array 
+
+      console.log(currentSample)
+      console.log(sampleIDs)
+      
   }
 
- let  samples = sampleData.filter(selectData);
- 
-  let sortedValues =  samples.sort((a , b ) => b.sample_values - a.sample_values);
-  let labels =  sortedValues[0].otu_ids.slice(0 , 10)
-  let values = sortedValues[0].sample_values.slice(0, 10)
-  console.log(labels)
-  console.log(values)
-
-  let reversedLabels = "otu" + labels.reverse()
-  let reversedValues = values.reverse()
 
 
-let trace1 = {
-  x: reversedValues,
-  y: reversedLabels,
-  type: "bar",
-  orientation: "h"
-}
-
-let tracedata = [trace1]
-
-Plotly.newPlot("bar" , tracedata)
-
+  buildMetadata(firstsample);
 
 })
-
 }
-
 init();
