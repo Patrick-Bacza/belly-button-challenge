@@ -22,20 +22,18 @@ function init() {
 
     let currentSample = metadata.filter((subject) => subject.id == sample)
 
+    
+
    let panel =  d3.select('#sample-metadata');
 
       for (let i = 0; i < currentSample.length; i++){
-            panel
-            .append("p")
-            .text(currentSample[i])
-            .property(currentSample[i])
-          console.log(currentSample[i])
+            console.log(currentSample[i])
       }
 
       // figure out how to get through the object insde the array 
 
       console.log(currentSample)
-      console.log(sampleIDs)
+    
       
   }
 
